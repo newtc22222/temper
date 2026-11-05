@@ -3,7 +3,9 @@ import type { Locale } from "@/lib/prefs";
 export type UiCopy = {
   siteName: string;
   kicker: string;
-  lede: string;
+  ledeBefore: string;
+  languageCourse: string;
+  ledeAfter: string;
   know: string;
   rulesTitle: string;
   rules: readonly string[];
@@ -51,7 +53,9 @@ export type UiCopy = {
 const en: UiCopy = {
   siteName: "Temper",
   kicker: "A short Axum course",
-  lede: "This course starts after the language course and does not replace it.",
+  ledeBefore: "This course starts after ",
+  languageCourse: "the language course",
+  ledeAfter: " and does not replace it.",
   know: "You should already be able to read ownership, `&` and `&mut`, `Option`, `Result`, structs, enums, iterators, modules, and `Debug`, `Clone`, and `Display`.",
   rulesTitle: "Three rules",
   rules: [
@@ -104,7 +108,9 @@ const en: UiCopy = {
 const vi: UiCopy = {
   siteName: "Temper",
   kicker: "Một khóa Axum ngắn",
-  lede: "Khóa này bắt đầu sau khóa ngôn ngữ và không thay thế nó.",
+  ledeBefore: "Khóa này bắt đầu sau ",
+  languageCourse: "khóa ngôn ngữ",
+  ledeAfter: " và không thay thế nó.",
   know: "Bạn nên đọc được ownership, `&` và `&mut`, `Option`, `Result`, struct, enum, iterator, module, và `Debug`, `Clone`, `Display`.",
   rulesTitle: "Ba quy tắc",
   rules: [

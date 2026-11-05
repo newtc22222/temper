@@ -24,7 +24,13 @@ function Home() {
     <main className="mx-auto max-w-3xl px-5 py-12">
       <p className="font-display text-lg italic text-oxide">{ui.kicker}</p>
       <h1 className="mt-3 font-display text-5xl text-balance text-ink sm:text-6xl">{ui.siteName}</h1>
-      <p className="mt-6 text-lg leading-relaxed text-pretty text-ink">{ui.lede}</p>
+      <p className="mt-6 text-lg leading-relaxed text-pretty text-ink">
+        {ui.ledeBefore}
+        <a href="https://patina-rust.netlify.app" className="border-b border-oxide text-oxide">
+          {ui.languageCourse}
+        </a>
+        {ui.ledeAfter}
+      </p>
       <p className="mt-3 text-lg leading-relaxed text-pretty text-ink-soft">
         <RichText text={ui.know} />
       </p>
