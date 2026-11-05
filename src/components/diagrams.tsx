@@ -204,6 +204,24 @@ function Walk() {
   );
 }
 
+function QueryDiagram() {
+  const d = diagramCopy[usePrefs().locale].query;
+  return (
+    <Frame caption={d.caption}>
+      <Steps items={d.steps} />
+    </Frame>
+  );
+}
+
+function MissDiagram() {
+  const d = diagramCopy[usePrefs().locale].miss;
+  return (
+    <Frame caption={d.caption}>
+      <Steps items={d.steps} />
+    </Frame>
+  );
+}
+
 const diagrams: Record<DiagramId, () => ReactNode> = {
   owns: Owns,
   signature: Signature,
@@ -217,6 +235,8 @@ const diagrams: Record<DiagramId, () => ReactNode> = {
   bound: Bound,
   modules: Modules,
   walk: Walk,
+  query: QueryDiagram,
+  miss: MissDiagram,
 };
 
 export function Diagram({ id }: { id: DiagramId }) {

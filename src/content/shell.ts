@@ -20,6 +20,14 @@ const tracksEn: Record<TrackId, TrackCopy> = {
     title: "The program",
     summary: "Read the compiler, split the files, walk one request.",
   },
+  change: {
+    title: "The change",
+    summary: "Delete, replace, and narrow the same list. No new store.",
+  },
+  edge: {
+    title: "The edge",
+    summary: "Change one field. Tell a missing path from a wrong method.",
+  },
 };
 
 const tracksVi: Record<TrackId, TrackCopy> = {
@@ -38,6 +46,14 @@ const tracksVi: Record<TrackId, TrackCopy> = {
   program: {
     title: "Chương trình",
     summary: "Đọc compiler, tách file, đi theo một request.",
+  },
+  change: {
+    title: "Thay đổi",
+    summary: "Xóa, thay, và thu hẹp cùng một danh sách. Không có kho mới.",
+  },
+  edge: {
+    title: "Phần biên",
+    summary: "Đổi một field. Phân biệt đường dẫn không có với method sai.",
   },
 };
 
@@ -60,7 +76,7 @@ export const glossaryVi: { body: string }[] = [
     body: "Một method, một đường dẫn, và một handler. `POST /notes` và `GET /notes` dùng chung một chuỗi đường dẫn và khác nhau ở method: `get(list_notes).post(create_note)`.",
   },
   {
-    body: "Một kiểu biến một phần của request thành đối số. `Path`, `Json`, và `State` là những extractor khóa này dùng. Extractor không đọc phần thân có thể đứng ở thứ tự bất kỳ. `Json` đọc phần thân, nên nó đứng cuối.",
+    body: "Một kiểu biến một phần của request thành đối số. `Path`, `Query`, `Json`, và `State` là những extractor khóa này dùng. Extractor không đọc phần thân có thể đứng ở thứ tự bất kỳ. `Json` đọc phần thân, nên nó đứng cuối.",
   },
   {
     body: "Extractor cho các đoạn `{id}` trong Axum 0.8. Một `Path<u64>` đơn parse đoạn đó thành số nguyên bạn sở hữu. Đoạn không vừa là 400, và handler không chạy.",
@@ -84,7 +100,7 @@ export const glossaryVi: { body: string }[] = [
     body: "Một guard một lúc. `lock` mượn danh sách cho đến khi guard rơi. Khóa này dùng `std::sync::Mutex` và không `.await` khi guard còn sống.",
   },
   {
-    body: "Phía `Err` của một extractor. `JsonRejection` là cách một phần thân sai thất bại. `PathRejection` là cách một đoạn sai thất bại. Cả hai là `Result`, không phải panic.",
+    body: "Phía `Err` của một extractor. `JsonRejection` là cách một phần thân sai thất bại. `PathRejection` là cách một đoạn sai thất bại. `QueryRejection` là cách một query string không khớp struct thất bại. Tất cả đều là `Result`, không phải panic.",
   },
   {
     body: "Bound trên kiểu trả về của handler. Mã trạng thái, chuỗi, `Json<T>`, tuple của những thứ đó, và `Result` của chúng đều implement nó. Một `Note` trần thì không.",
@@ -94,6 +110,12 @@ export const glossaryVi: { body: string }[] = [
   },
   {
     body: "Tokio, đã được `#[tokio::main]` khởi động và được `axum::serve` dùng. Khóa này không cấu hình nó, không spawn task, và không nhắc `Pin` nữa.",
+  },
+  {
+    body: "Extractor cho query string, như `GET /notes?title=Salt`. Nó không đọc phần thân. `Query<ListQuery>` deserialize thành một giá trị bạn sở hữu. Field `Option` thiếu là `None`. Chuỗi không deserialize được là `QueryRejection`, và handler không chạy.",
+  },
+  {
+    body: "`Router::fallback` chạy khi không route nào khớp đường dẫn. Đường dẫn đã có mà method sai là 405 từ method router, và fallback không chạy. Handler trả 404 vẫn đã chạy, vì route của nó đã khớp.",
   },
 ];
 
@@ -121,7 +143,27 @@ export const signatureVi: { title: string; note: string }[] = [
   },
   {
     title: "Router và serve",
-    note: "`.with_state` trước. `unwrap` ở đây là lúc khởi động tiến trình, không phải một request.",
+    note: "`.fallback` rồi `.with_state`, rồi `serve`. `unwrap` ở đây là lúc khởi động tiến trình, không phải một request.",
+  },
+  {
+    title: "Xóa",
+    note: "204 không có phần thân. `None` từ `position` là 404.",
+  },
+  {
+    title: "Thay",
+    note: "Id vẫn là id trên đường dẫn. `Json` đứng cuối. Ghi chú thiếu không được tạo.",
+  },
+  {
+    title: "Query",
+    note: "Không đọc phần thân. `title` thiếu là `None`.",
+  },
+  {
+    title: "Patch",
+    note: "Field thiếu là `None` và giữ nguyên. `Json` đứng cuối. Id thiếu không được tạo.",
+  },
+  {
+    title: "Fallback",
+    note: "Chỉ đường dẫn không khớp. Đường dẫn đã có mà method sai là 405, và hàm này không chạy.",
   },
 ];
 
@@ -135,12 +177,20 @@ export const statusVi: { when: string; who: string }[] = [
     who: "Bạn trả về `StatusCode::CREATED` cùng `Json(note)`.",
   },
   {
-    when: "Đoạn `{id}` không phải `u64`, hoặc handler ánh xạ `JsonRejection` sang `BAD_REQUEST`.",
-    who: "`Path`, theo mặc định. Hoặc `map_err` của bạn.",
+    when: "`DELETE /notes/{id}` đã xóa một ghi chú. Phần thân rỗng.",
+    who: "Bạn trả về `StatusCode::NO_CONTENT`.",
+  },
+  {
+    when: "Đoạn `{id}` không phải `u64`, query string không khớp `ListQuery`, hoặc handler ánh xạ `JsonRejection` sang `BAD_REQUEST`.",
+    who: "`Path` và `Query`, theo mặc định. Hoặc `map_err` của bạn.",
   },
   {
     when: "Đoạn đã parse, và không ghi chú nào có id đó. Phần thân rỗng.",
     who: "Bạn biến `None` thành `StatusCode::NOT_FOUND`.",
+  },
+  {
+    when: "Đường dẫn khớp một route, và route đó không có handler cho method. `DELETE /notes` là trường hợp này, vì `/notes` chỉ có `GET` và `POST`.",
+    who: "Method router của Axum. Handler của bạn không chạy, và `fallback` cũng không.",
   },
   {
     when: "Bạn để `Json<T>` không bọc, và content type không phải JSON. Khóa này ánh xạ trường hợp đó sang 400.",

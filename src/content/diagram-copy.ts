@@ -58,6 +58,8 @@ type DiagramStrings = {
   bound: { caption: string; steps: Step[] };
   modules: { caption: string; steps: Step[] };
   walk: { caption: string; steps: Step[] };
+  query: { caption: string; steps: Step[] };
+  miss: { caption: string; steps: Step[] };
 };
 
 const en: DiagramStrings = {
@@ -167,6 +169,22 @@ const en: DiagramStrings = {
       { k: "6", v: "Axum writes the bytes" },
     ],
   },
+  query: {
+    caption: "The query string is not the body. A missing key keeps the whole list.",
+    steps: [
+      { k: "GET /notes", v: "title is None — every note" },
+      { k: "?title=Salt", v: "Some — equal titles only", point: true },
+      { k: "?title=Pepper", v: "200 and [] — not 404" },
+    ],
+  },
+  miss: {
+    caption: "No route is the fallback. A known path and the wrong method is 405.",
+    steps: [
+      { k: "GET /other", v: "no route — fallback, 404", point: true },
+      { k: "DELETE /notes", v: "path matches — 405, fallback does not run", point: true },
+      { k: "GET /notes/9", v: "get_note runs — its own 404" },
+    ],
+  },
 };
 
 const vi: DiagramStrings = {
@@ -274,6 +292,22 @@ const vi: DiagramStrings = {
       { k: "4", v: "Json sở hữu một NewNote, hoặc 400" },
       { k: "5", v: "lock, push, trả 201", point: true },
       { k: "6", v: "Axum viết các byte" },
+    ],
+  },
+  query: {
+    caption: "Query string không phải phần thân. Key thiếu thì giữ cả danh sách.",
+    steps: [
+      { k: "GET /notes", v: "title là None — mọi ghi chú" },
+      { k: "?title=Salt", v: "Some — chỉ title bằng nhau", point: true },
+      { k: "?title=Pepper", v: "200 và [] — không phải 404" },
+    ],
+  },
+  miss: {
+    caption: "Không có route là fallback. Đường dẫn đã có mà method sai là 405.",
+    steps: [
+      { k: "GET /other", v: "không route — fallback, 404", point: true },
+      { k: "DELETE /notes", v: "đường dẫn khớp — 405, fallback không chạy", point: true },
+      { k: "GET /notes/9", v: "get_note chạy — 404 của chính nó" },
     ],
   },
 };

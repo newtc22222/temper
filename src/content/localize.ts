@@ -8,6 +8,8 @@ import { copy } from "./ui";
 import type { Lesson, Track } from "./types";
 import { usePrefs, type Locale } from "@/lib/prefs";
 import { bodyVi } from "./vi/body";
+import { changeVi } from "./vi/change";
+import { edgeVi } from "./vi/edge";
 import { listVi } from "./vi/list";
 import { programVi } from "./vi/program";
 import { requestVi } from "./vi/request";
@@ -17,6 +19,8 @@ const lessonVi: Record<string, Parameters<typeof applyLesson>[1]> = {
   ...bodyVi,
   ...listVi,
   ...programVi,
+  ...changeVi,
+  ...edgeVi,
 };
 
 export function localizeLesson(lesson: Lesson, locale: Locale): Lesson {

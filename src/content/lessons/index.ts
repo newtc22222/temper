@@ -1,5 +1,7 @@
 import type { Lesson, Track, TrackId } from "../types";
 import { bodyLessons } from "./body";
+import { changeLessons } from "./change";
+import { edgeLessons } from "./edge";
 import { listLessons } from "./list";
 import { programLessons } from "./program";
 import { requestLessons } from "./request";
@@ -25,6 +27,16 @@ export const tracks: Track[] = [
     title: "The program",
     summary: "Read the compiler, split the files, walk one request.",
   },
+  {
+    id: "change",
+    title: "The change",
+    summary: "Delete, replace, and narrow the same list. No new store.",
+  },
+  {
+    id: "edge",
+    title: "The edge",
+    summary: "Change one field. Tell a missing path from a wrong method.",
+  },
 ];
 
 export const lessons: Lesson[] = [
@@ -32,6 +44,8 @@ export const lessons: Lesson[] = [
   ...bodyLessons,
   ...listLessons,
   ...programLessons,
+  ...changeLessons,
+  ...edgeLessons,
 ];
 
 export function lessonsIn(track: TrackId): Lesson[] {

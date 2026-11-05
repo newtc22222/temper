@@ -25,8 +25,8 @@ export const Route = createRootRoute({
           name: "description",
           content:
             prefs.locale === "vi"
-              ? "Một khóa đọc ngắn về framework web Axum. Ghi chú trong bộ nhớ: tạo, liệt kê, lấy một cái."
-              : "A short Axum course for readers who already know Rust. In-memory notes: create, list, get one.",
+              ? "Một khóa đọc ngắn về framework web Axum. Ghi chú trong bộ nhớ: tạo, liệt kê, lấy, thay, xóa, đổi một field."
+              : "A short Axum course for readers who already know Rust. In-memory notes: create, list, get, replace, delete, change one field.",
         },
         { name: "theme-color", content: prefs.theme === "dark" ? "#141210" : "#F3EFE6" },
       ],

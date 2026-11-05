@@ -1,4 +1,4 @@
-export type TrackId = "request" | "body" | "list" | "program";
+export type TrackId = "request" | "body" | "list" | "program" | "change" | "edge";
 
 export type DiagramId =
   | "owns"
@@ -12,7 +12,9 @@ export type DiagramId =
   | "option"
   | "bound"
   | "modules"
-  | "walk";
+  | "walk"
+  | "query"
+  | "miss";
 
 export type SnipLabel = "fragment" | "fails";
 

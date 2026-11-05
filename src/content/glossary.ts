@@ -17,7 +17,7 @@ export const glossary: { term: string; body: string }[] = [
   },
   {
     term: "Extractor",
-    body: "A type that turns part of the request into an argument. `Path`, `Json`, and `State` are the ones this course uses. Extractors that do not read the body may sit in any order. `Json` reads the body, so it is last.",
+    body: "A type that turns part of the request into an argument. `Path`, `Query`, `Json`, and `State` are the ones this course uses. Extractors that do not read the body may sit in any order. `Json` reads the body, so it is last.",
   },
   {
     term: "Path",
@@ -49,7 +49,7 @@ export const glossary: { term: string; body: string }[] = [
   },
   {
     term: "Rejection",
-    body: "The `Err` side of an extractor. `JsonRejection` is how a bad body fails. `PathRejection` is how a bad segment fails. Both are `Result`s, not panics.",
+    body: "The `Err` side of an extractor. `JsonRejection` is how a bad body fails. `PathRejection` is how a bad segment fails. `QueryRejection` is how a query string that does not fit the struct fails. All of these are `Result`s, not panics.",
   },
   {
     term: "IntoResponse",
@@ -62,5 +62,13 @@ export const glossary: { term: string; body: string }[] = [
   {
     term: "Runtime",
     body: "Tokio, already started by `#[tokio::main]` and used by `axum::serve`. This course does not configure it, spawn tasks, or mention `Pin` again.",
+  },
+  {
+    term: "Query",
+    body: "The extractor for the query string, as in `GET /notes?title=Salt`. It does not read the body. `Query<ListQuery>` deserializes into a value you own. A missing `Option` field is `None`. A string that cannot be deserialized is `QueryRejection`, and the handler does not run.",
+  },
+  {
+    term: "Fallback",
+    body: "`Router::fallback` runs when no route matches the path. A known path with the wrong method is 405 from the method router, and the fallback does not run. A handler that returns 404 still ran, because its route matched.",
   },
 ];
