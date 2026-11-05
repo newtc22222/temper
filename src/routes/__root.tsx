@@ -5,13 +5,13 @@ import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { SiteFrame } from "@/components/site-frame";
 import { copy } from "@/content/ui";
 import { parsePrefs, PrefsProvider, type Prefs } from "@/lib/prefs";
+import { readRequestPrefs } from "@/lib/request-prefs";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
   loader: async () => {
     if (typeof document !== "undefined") return parsePrefs(document.cookie);
-    const { getRequestHeader } = await import("@tanstack/react-start/server");
-    return parsePrefs(getRequestHeader("cookie"));
+    return readRequestPrefs();
   },
   head: ({ loaderData }) => {
     const prefs = loaderData ?? { locale: "en" as const, theme: "light" as const };
