@@ -9,4 +9,4 @@ npm install
 npm run dev
 ```
 
-Netlify builds with `DEPLOY_TARGET=netlify npm run build` (`netlify.toml`).
+Netlify builds with `DEPLOY_TARGET=netlify npm run build` (`netlify.toml`). The live page is [temper-axum.netlify.app](https://temper-axum.netlify.app).
